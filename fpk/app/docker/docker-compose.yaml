@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  iyuuplus:
+    image: iyuucn/iyuuplus-dev:8.3.23
+    container_name: iyuuplus
+    network_mode: bridge
+    restart: always
+    ports:
+      - ${wizard_port}:8780
+    volumes:
+      - ${TRIM_PKGETC}:/iyuu
+      - ${TRIM_PKGVAR}/data:/data

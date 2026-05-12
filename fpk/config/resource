@@ -1,0 +1,28 @@
+{
+    "docker-project":
+    {
+        "projects":
+        [
+            {
+                "name": "iyuuplus",
+                "path": "docker"
+            }
+        ]
+    },
+    "data-share":
+    {
+        "shares":
+        [
+            {
+                "name": "iyuuplus",
+                "permission":
+                {
+                    "rw":
+                    [
+                        "docker-iyuuplus"
+                    ]
+                }
+            }
+        ]
+    }
+}

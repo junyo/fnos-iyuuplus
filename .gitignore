@@ -1,0 +1,4 @@
+.act-artifacts/
+dist/
+*.fpk
+.DS_Store

@@ -1,0 +1,27 @@
+[
+  {
+    "stepTitle": "IYUUPlus",
+    "items": [
+      {
+        "type": "tips",
+        "helpText": "IYUUPlus 是 IYUU 自动辅种工具，集成 WebUI、辅种、转移、下载、DDNS 等功能。<br>容器内 Nginx 监听固定端口 <strong>8780</strong>，反向代理内部服务（8787 / 3131）。<br>请在下方指定宿主机上对外暴露的访问端口，避免与其他服务冲突。"
+      },
+      {
+        "type": "text",
+        "field": "wizard_port",
+        "label": "访问端口（宿主机）",
+        "initValue": "8780",
+        "rules": [
+          {
+            "required": true,
+            "message": "请输入端口号"
+          },
+          {
+            "pattern": "^[0-9]+$",
+            "message": "端口号必须是数字"
+          }
+        ]
+      }
+    ]
+  }
+]

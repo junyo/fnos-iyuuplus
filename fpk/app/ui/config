@@ -1,0 +1,13 @@
+{
+    ".url": {
+        "iyuuplus.Application": {
+            "title": "IYUUPlus",
+            "icon": "images/icon_{0}.png",
+            "type": "url",
+            "protocol": "",
+            "port": "${wizard_port}",
+            "url": "/",
+            "allUsers": false
+        }
+    }
+}

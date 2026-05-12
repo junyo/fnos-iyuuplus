@@ -1,0 +1,71 @@
+name: Build FPK
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download fnpack (linux amd64)
+        run: |
+          set -euo pipefail
+          curl -sSL "https://static2.fnnas.com/fnpack/fnpack-1.0.4-linux-amd64" -o fnpack
+          chmod +x fnpack
+          sudo mv fnpack /usr/local/bin/fnpack
+          fnpack --help >/dev/null 2>&1 || true
+
+      - name: Build fpk
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          fnpack build --directory fpk
+
+          read_kv() {
+            local key="$1"
+            awk -v k="$key" '
+              BEGIN { pattern = "^[[:space:]]*" k "[[:space:]]*=" }
+              $0 ~ pattern {
+                sub(/^[^=]*=/, "")
+                gsub(/^[[:space:]]+|[[:space:]]+$/, "", $0)
+                gsub(/\r/, "", $0)
+                print
+                exit
+              }
+            ' fpk/manifest
+          }
+
+          appname="$(read_kv appname)"
+          platform="$(read_kv platform)"
+          version="$(read_kv version)"
+          if [ -z "${appname}" ] || [ -z "${platform}" ] || [ -z "${version}" ]; then
+            echo "ERROR: failed to parse appname/platform/version from fpk/manifest" >&2
+            exit 1
+          fi
+
+          shopt -s nullglob
+          built=(./*.fpk)
+          if [ "${#built[@]}" -eq 0 ]; then
+            echo "ERROR: fnpack did not produce any .fpk in repo root" >&2
+            exit 1
+          fi
+          if [ "${#built[@]}" -gt 1 ]; then
+            echo "WARNING: multiple .fpk files; using first only: ${built[0]}" >&2
+          fi
+
+          dest="dist/fnos-${appname}-${platform}-${version}.fpk"
+          mv -f "${built[0]}" "${dest}"
+          echo "dist contents:"
+          ls -la dist || true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fpk
+          path: dist/*.fpk
+          if-no-files-found: error
+          retention-days: 7

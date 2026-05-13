@@ -1,5 +1,5 @@
 appname               = iyuuplus
-version               = 8.3.23-0
+version               = 8.3.23-1
 display_name          = IYUUPlus
 desc                  = IYUU自动辅种工具，集成 WebUI、辅种、转移、下载、DDNS 等功能，支持 qBittorrent / Transmission，支持国内主流 PT 站点自动辅种。
 platform              = all
